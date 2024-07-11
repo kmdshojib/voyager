@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Lato } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import ThemeProvider from "@/components/ui/themeProvider";
 import Navbar from "@/components/Navigation/Navigation";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Lato({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Voyager",
