@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
         <div className="text-gray-900 text-lg font-bold">
           {/* logo */}
           <Link href="/">
-            <p>MyApp</p>
+            <p>Voyager</p>
           </Link>
         </div>
         <div className="flex space-x-4">
