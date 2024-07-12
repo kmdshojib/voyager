@@ -29,7 +29,7 @@ const TravelCard: FC<TravelCardProps> = ({
   ...props
 }) => {
   return (
-    <Card className={cn("w-full md:w-80 lg:w-96", className)} {...props}>
+    <Card className={cn("w-60 md:w-72", className)} {...props}>
       <Image src={cardImage} alt="cardImage" className="rounded-t-sm w-full" />
       <div className="m-3">
         <div className="mb-3 flex justify-between">
