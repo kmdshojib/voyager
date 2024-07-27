@@ -11,7 +11,7 @@ export default function Home() {
           <MostPopularTours />
         </Container>
       </div>
-      <div className="bg-white">
+      <div className="bg-white my-5">
         <Container>
           <DealsDiscount />
         </Container>
