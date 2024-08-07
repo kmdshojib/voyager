@@ -19,7 +19,7 @@ const FindYourPerfectTour: React.FC = () => {
                     <li className='cursor-pointer hover:text-rose-500 hover:font-semibold'>Recomended</li>
                 </ul>
             </div>
-            <div className='grid place-content-center grid-cols-1 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2'>
+            <div className='grid place-items-center grid-cols-1 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2'>
                 {Array.from({ length: 6 }).map((_, index) => (
                     <div key={index} className="p-2 pl-6 sm:pl-0 md:p-4">
                         <TravelCard

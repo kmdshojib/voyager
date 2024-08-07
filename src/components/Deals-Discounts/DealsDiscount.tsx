@@ -59,13 +59,13 @@ const DealsDiscount: React.FC = () => {
         // Add more dummy data as needed
     ];
     return (
-        <div className='flex flex-col md:flex-row'>
+        <div className='flex flex-col lg:flex-row'>
             <div className='mr-3'>
                 <div className='my-3'>
                     <h1 className='text-3xl my-3'>Deals & Discounts</h1>
                     <p className='text-gray-400 text-pretty'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur corrupti temporibus hic natus rerum facere odit soluta sint aliquam maxime rem, non, tenetur omnis quasi cupiditate veritatis itaque numquam incidunt?</p>
                 </div>
-                <div className='flex flex-wrap gap-4 flex-col items-center md:flex-row my-3'>
+                <div className='flex gap-4 flex-col items-center md:flex-row my-3'>
                     {deals.map((deal, index) => (
                         <DealsDiscountCard
                             key={index}
@@ -80,7 +80,7 @@ const DealsDiscount: React.FC = () => {
                 </div>
             </div>
             {/* top reviews */}
-            <div className='border-[0.01px] border-gray-300 w-full md:w-2/5 my-3 rounded-sm shadow-sm h-80 overflow-hidden self-center '>
+            <div className='border-[0.01px] border-gray-300 w-full md:w-3/4 lg:w-2/5 my-3 rounded-sm shadow-sm h-80 overflow-hidden self-center '>
                 <div className='m-5'>
                     <h1 className='text-2xl mb-3'>Top Reviews</h1>
                     <hr />
