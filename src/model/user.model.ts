@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { IUser } from '../interface/user.interface';
 
 const userSchema = new Schema<IUser>({
@@ -7,7 +8,7 @@ const userSchema = new Schema<IUser>({
     email: { type: String, required: [true, "Please Provide an eamil!"], unique: true },
     password: { type: String, required: [true, "Please Provide a Password!"] },
     avatar: { type: String },
-    accessToken: { type: String, required: true }
+    refreshToken: { type: String, }
 })
 
 userSchema.pre("save", async function (next) {
@@ -16,9 +17,28 @@ userSchema.pre("save", async function (next) {
     next();
 })
 
-userSchema.methods.isPaswordCorrect = async function (password: string) {
-    return await bcrypt.compare(password, this.password);
-}
+userSchema.methods.isPasswordCorrect = async function (password: string | number): Promise<boolean> {
+    const stringPassword = typeof password === 'number' ? (password as number).toString() : password;
+    return await bcrypt.compare(stringPassword, this.password);
+};
 
+
+userSchema.methods.generateAccessToken = function () {
+    return jwt.sign({
+        _id: this._id,
+        email: this.email,
+        name: this.name,
+    },
+        process.env.ACCESS_TOKEN_SECRET!
+    )
+}
+userSchema.methods.generateRefreshToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+        },
+        process.env.REFRESH_TOKEN_SECRET!
+    )
+}
 const User = mongoose.models.users || mongoose.model("users", userSchema)
 export default User;
