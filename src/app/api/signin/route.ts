@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
 
         // Set cookies
         response.cookies.set('accessToken', accessToken, {
-            httpOnly: true, // Prevent client-side access
-            sameSite: 'lax', // CSRF protection
-            maxAge: 3600 // Cookie expiration time in seconds
+            httpOnly: true, 
+            sameSite: 'lax',
+            maxAge: 3600 
         });
 
         response.cookies.set('refreshToken', refreshToken, {

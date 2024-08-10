@@ -1,0 +1,12 @@
+/* HeroCarousel.css */
+
+.title-animation {
+    opacity: 0;
+    transform: translateY(50%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.carousel-item-active .title-animation {
+    opacity: 1;
+    transform: translateY(0);
+}
