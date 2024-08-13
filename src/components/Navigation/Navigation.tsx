@@ -22,14 +22,17 @@ const Navbar: React.FC = () => {
           <Link href="/contact">
             <p className="text-white-500 hover:text-rose-500">Contact</p>
           </Link>
-          <form
+          <Link href="/signin">
+            <p className="text-white-500 hover:text-rose-500">SignIn</p>
+          </Link>
+          {/* <form
             action={async (formData) => {
               "use server"
               await signOut()
             }}
           >
             <button type="submit">Sign out</button>
-          </form>
+          </form> */}
         </div>
       </div>
     </nav>

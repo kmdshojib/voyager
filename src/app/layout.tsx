@@ -5,6 +5,7 @@ import StoreProvider from "./StoreProvider";
 import ThemeProvider from "@/components/ui/themeProvider";
 import Navbar from "@/components/Navigation/Navigation";
 import Footer from "@/components/footer/Footer";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Lato({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
           <StoreProvider>
             <Navbar />
             {children}
+            <Toaster />
             <Footer />
           </StoreProvider>
         </ThemeProvider>

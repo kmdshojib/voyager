@@ -25,18 +25,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const dbUser = await User.findOne({ email: user.email });
 
         if (!dbUser) {
-          // If the user doesn't exist, create a new user
           await User.create({
             name: user.name,
             email: user.email,
             avatar: user.image,
-            socialAuthentication: true, // Typo corrected: "socalAuthentication" to "socialAuthentication"
+            socialAuthentication: true,
           });
         }
 
-        // Custom logic for handling sign-in can be added here
-
-        return true; // Return true to allow sign-in
+        return true; 
       } catch (error) {
         console.error("Sign-in error:", error);
         return false; // Return false to deny sign-in
