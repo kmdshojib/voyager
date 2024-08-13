@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { signOut } from "../../../auth";
 
 const Navbar: React.FC = () => {
   return (
@@ -21,6 +22,14 @@ const Navbar: React.FC = () => {
           <Link href="/contact">
             <p className="text-white-500 hover:text-rose-500">Contact</p>
           </Link>
+          <form
+            action={async (formData) => {
+              "use server"
+              await signOut()
+            }}
+          >
+            <button type="submit">Sign out</button>
+          </form>
         </div>
       </div>
     </nav>
