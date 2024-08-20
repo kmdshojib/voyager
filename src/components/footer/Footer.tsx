@@ -110,9 +110,9 @@ const Footer: FC = () => {
         </div>
       </div>
       <div className="border-t border-gray-700 mt-8 pt-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <p>© 2024 Qode Interactive, All Rights Reserved</p>
-          <div className="flex space-x-4">
+        <div className="container mx-auto flex justify-between items-center flex-col md:flex-row">
+          <p className="text-sm md:text-lg">© 2024 Qode Interactive, All Rights Reserved</p>
+          <div className="flex space-x-4 mt-2 md:mt-0">
             <Link href="#" passHref>
               <FaFacebookF className="w-5 h-5 cursor-pointer" />
             </Link>

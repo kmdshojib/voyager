@@ -15,15 +15,17 @@ export async function POST(req: NextRequest) {
         // if ([name, email, password].some(field => !field.trim())) {
         //     return NextResponse.json({ message: "All fields are required", status: 400 });
         // }
-
+        if (!password) {
+            return NextResponse.json({ message: "Password is required", status: 400 });
+        }
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return NextResponse.json({ message: "User already exists", status: 400 });
         }
-
         // Create new user
-        const createdUser = await User.create({ name, email, password });
+        const stringPassword = password.toString();
+        const createdUser = await User.create({ name, email, password: stringPassword });
         if (!createdUser) {
             return NextResponse.json({ message: "Something went wrong while creating the user", status: 500 });
         }
