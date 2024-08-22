@@ -29,8 +29,14 @@ export async function POST(req: NextRequest) {
         if (!createdUser) {
             return NextResponse.json({ message: "Something went wrong while creating the user", status: 500 });
         }
-
-        return NextResponse.json({ status: 200, message: "User created successfully!" });
+        const user = await User.findOne({ _id: createdUser._id }).select("-password -refreshToken");
+        return NextResponse.json(
+            {
+                status: 200,
+                message: "User created successfully!",
+                user: user
+            }
+        );
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: "An error occurred", status: 500 });

@@ -8,8 +8,15 @@ export const authService = apiService.injectEndpoints({
                 method: "POST",
                 data: credentials,
             }),
+        }),
+        signUpUser: build.mutation<any, any>({
+            query: (credentials) => ({
+                data: credentials,
+                method: "POST",
+                url: "signup"
+            }),
         })
     })
 })
 
-export const { useSigninUserMutation } = authService
+export const { useSigninUserMutation, useSignUpUserMutation } = authService

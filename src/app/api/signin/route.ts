@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Invalid email or password", status: 400 });
         }
 
-        const user = await User.findOne({ email:email });
+        const user = await User.findOne({ email: email });
         if (!user) {
             return NextResponse.json({ message: "User not found", status: 401 });
         }
@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
 
         // Set cookies
         response.cookies.set('accessToken', accessToken, {
-            httpOnly: true, 
+            httpOnly: true,
             sameSite: 'lax',
-            maxAge: 3600 
+            maxAge: 3600
         });
 
         response.cookies.set('refreshToken', refreshToken, {

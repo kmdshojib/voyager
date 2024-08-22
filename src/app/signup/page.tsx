@@ -17,9 +17,10 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link"
-
-import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { Loader2 } from "lucide-react"
+import { useCallback } from "react"
+import { useSignUpUserMutation } from "@/lib/services/authServices"
+import { useRouter } from "next/navigation"
 const FormSchema = z.object({
   email: z.string().min(2, {
     message: "Email must be at least 4 characters.",
@@ -33,8 +34,8 @@ const FormSchema = z.object({
 })
 
 export default function SignUp() {
-  const dispatch = useAppDispatch()
-  const user = useAppSelector(state => state)
+  const [signUpUserMutation, { isLoading }] = useSignUpUserMutation()
+  const router = useRouter()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -44,27 +45,27 @@ export default function SignUp() {
     },
   })
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  const onSubmit = useCallback(async (data: z.infer<typeof FormSchema>) => {
+    try {
+      const result = await signUpUserMutation(data).unwrap();
+      if (result.status === 200) {
+        const { user, message } = result;
+        console.log({ message, user });
+        toast({
+          title: message,
+          variant: "default",
+          className: "bg-green-500 text-white", 
+          duration: 3000, 
+        });
+        setTimeout(() => {
+          router.push("/signin")
+        }, 500);
 
-    // try {
-    //   // const result = await signinMutation(data).unwrap();
-    //   if (result.status === 200) {
-    //     const { user, message } = result
-    //     console.log({ message, user })
-    //     dispatch(loginUser(user))
-    //     toast({
-    //       title: message,
-    //       variant: "default",
-    //     })
-    //     setTimeout(() => {
-    //       // router.push("/")
-    //     }, 1000)
-    //   }
-    // } catch (err) {
-    //   console.error(err)
-    // }
-    // console.log(user.auth.user)
-  }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [router,signUpUserMutation]);
 
   return (
     <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-gray-50 text-gray-800 my-5 ">
@@ -91,7 +92,7 @@ export default function SignUp() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block text-gray-600 mb-2">Email</FormLabel>
+                <FormLabel className="block text-gray-600 mb-2 mt-2">Email</FormLabel>
                 <FormControl>
                   <Input placeholder="leroy@jenkins.com" {...field} className="" />
                 </FormControl>
@@ -113,11 +114,15 @@ export default function SignUp() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-3">
-            {/* {
-              !isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Sign In"
-            } */}
-          </Button>
+          {
+            isLoading ? (
+              <Button type="submit" className="mt-3" disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              </Button>
+            ) : (
+              <Button type="submit" className="mt-3">Sign Up</Button>
+            )
+          }
           <p className="text-sm text-center text-gray-600 mt-2">Have an account?
             <Link href="/signin" rel="noopener noreferrer" className="focus:underline hover:underline hover:text-rose-500"> Sign In</Link>
           </p>
@@ -129,7 +134,7 @@ export default function SignUp() {
 
         </form>
         <Button variant={"outline"} className="w-full">
-          <FcGoogle className="mr-2 h-4 w-4" /> Sign in with Google
+          <FcGoogle className="mr-2 h-4 w-4" /> Sign up with Google
         </Button>
       </Form>
     </div>

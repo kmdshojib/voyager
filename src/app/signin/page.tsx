@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { loginUser } from "@/lib/features/authSlice"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
+import { useCallback } from "react"
 
 const FormSchema = z.object({
   email: z.string().min(2, {
@@ -35,7 +36,7 @@ const FormSchema = z.object({
 export default function Signin() {
   const [signinMutation, { isLoading }] = useSigninUserMutation()
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state)
+  const user = useAppSelector((state) => state.auth.user);
   const router = useRouter()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -45,25 +46,27 @@ export default function Signin() {
     },
   })
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  const onSubmit = useCallback(async (data: z.infer<typeof FormSchema>) => {
     try {
-      const result = await signinMutation(data).unwrap()
+      const result = await signinMutation(data).unwrap();
       if (result.status === 200) {
-        const { user, message } = result
-        console.log({ message, user })
-        dispatch(loginUser(user))
+        const { user, message } = result;
+        console.log({ message, user });
+        dispatch(loginUser(user));
         toast({
           title: message,
           variant: "default",
-        })
-        router.push("/")
+          className: "bg-green-500 text-white",
+          duration: 3000, 
+        });
+        setTimeout(() => {
+          router.push("/");
+        }, 500);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-    console.log(user.auth.user)
-  }
-
+  }, [dispatch, router,signinMutation]);
   return (
     <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-gray-50 text-gray-800 my-5 ">
       <h1 className="text-2xl font-bold text-center">Signin</h1>
@@ -106,7 +109,7 @@ export default function Signin() {
               <Button type="submit" className="mt-3">Sign in</Button>
             )
           }
-          <p className="text-sm text-center text-gray-600 mt-2">Don't have account?
+          <p className="text-sm text-center text-gray-600 mt-2">Don&apos;t have account?
             <Link href="/signup" rel="noopener noreferrer" className="focus:underline hover:underline hover:text-rose-500"> Sign up</Link>
           </p>
           <div className="flex items-center w-full my-4">
