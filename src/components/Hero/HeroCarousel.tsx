@@ -16,10 +16,10 @@ const titleVariants = {
 const transitionDuration = 0.5; // Duration of the transition in seconds
 
 const HeroCarousel = () => {
-    const plugin = useAutoplay(4000);
+    const plugin = useAutoplay(5000);
 
     return (
-        <div className="relative w-full">
+        <div className="relative w-full ">
             <Carousel plugins={[plugin.current]} className="w-full h-full">
                 <CarouselContent>
                     <CarouselItem>

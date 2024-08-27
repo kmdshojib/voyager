@@ -61,7 +61,7 @@ const DealsDiscount: React.FC = () => {
     return (
         <div className='flex flex-col lg:flex-row'>
             <div className='mr-3'>
-                <div className='my-3'>
+                <div className='my-3 text-center'>
                     <h1 className='text-3xl my-3'>Deals & Discounts</h1>
                     <p className='text-gray-400 text-pretty'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur corrupti temporibus hic natus rerum facere odit soluta sint aliquam maxime rem, non, tenetur omnis quasi cupiditate veritatis itaque numquam incidunt?</p>
                 </div>

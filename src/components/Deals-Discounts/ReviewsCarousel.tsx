@@ -7,14 +7,13 @@ interface ReviewsCarouselProps {
     children: React.ReactNode;
 }
 const ReviewsCarousel: FC<ReviewsCarouselProps> = ({ children }) => {
-    const plugin = useAutoplay(5000, true);
-
+   
     return (
         <Carousel
             opts={{
                 align: "start",
             }}
-            plugins={[plugin.current]}
+            // plugins={[plugin.current]}
             orientation="vertical"
             className="w-full max-w-xs"
         >
@@ -23,6 +22,7 @@ const ReviewsCarousel: FC<ReviewsCarouselProps> = ({ children }) => {
                     children
                 }
             </CarouselContent>
+                
         </Carousel>
     )
 }

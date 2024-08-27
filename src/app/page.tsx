@@ -7,12 +7,12 @@ import Hero from "@/components/Hero/Hero";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col overflow-hidden">
-      <div className="mb-5">
+      <div className="bg-[#F9F9F9]">
         <Hero />
       </div>
       {/* why this content is overflowing in hero */}
-      <div className="bg-[#F9F9F9] flex mt-5">
-        <Container>
+      <div className="bg-[#F9F9F9] flex">
+        <Container className="pt-5">
           <MostPopularTours />
         </Container>
       </div>
@@ -21,7 +21,7 @@ export default function Home() {
           <DealsDiscount />
         </Container>
       </div>
-      <div className="bg-[#F9F9F9] flex">
+      <div id="tours" className="bg-[#F9F9F9] flex">
         <Container>
           <FindYourPerfectTour />
         </Container>

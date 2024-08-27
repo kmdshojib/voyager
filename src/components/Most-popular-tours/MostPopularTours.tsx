@@ -18,7 +18,7 @@ const MostPopularTours: React.FC = () => {
                             key={index}
                             className="px-1 md:px-2 md:basis-1/2 lg:basis-1/3"
                         >
-                            <div className="p-2 pl-6 sm:pl-0 md:p-4">
+                            <div className="sm:pl-0 md:p-4 mx-auto w-max">
                                 <TravelCard
                                     cardImage={cardImage}
                                     title="Discover Greece"
@@ -29,6 +29,7 @@ const MostPopularTours: React.FC = () => {
                                     guests="12 guests"
                                 />
                             </div>
+
                         </CarouselItem>
                     ))}
                 </HomeCarousel>

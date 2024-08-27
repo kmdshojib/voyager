@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { signOut } from "../../../auth";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { MobileMenu } from "../Mobile-menu/mobileMenu";
 const Navbar: React.FC = () => {
   
   return (
@@ -36,7 +37,7 @@ const Navbar: React.FC = () => {
           </form> */}
         </div>
         <div className="flex md:hidden cursor-pointer">
-          <GiHamburgerMenu size={20}/>
+          <MobileMenu />
         </div>
       </div>
     </nav>
