@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
         // Parse the request body to get the travel details
         const reqBody: ITravel = await req.json();
 
+
         // Validate required fields (optional but recommended)
         if (!reqBody.name || !reqBody.price || !reqBody.image || !reqBody.description || !reqBody.duration || !reqBody.guests || !reqBody.tag) {
             return NextResponse.json(
