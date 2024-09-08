@@ -1,9 +1,11 @@
 import React from 'react'
 import SectionHeaderText from '../SectionHeaderText/SectionHeaderText';
 import TravelCard from '../Travel-card/TravelCard';
-import cardImage from "../../assets/images/discoverGrease.jpg"
 
-const FindYourPerfectTour: React.FC = () => {
+const FindYourPerfectTour: React.FC = async () => {
+    const baseURL = process.env.baseUrl
+    const data = await fetch(`${baseURL}getTour`)
+    const tours = await data.json()
     return (
         <div className='my-5'>
             <SectionHeaderText
@@ -20,16 +22,16 @@ const FindYourPerfectTour: React.FC = () => {
                 </ul>
             </div>
             <div className='grid place-items-center grid-cols-1 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2'>
-                {Array.from({ length: 6 }).map((_, index) => (
-                    <div key={index} className="p-2 pl-6 sm:pl-0 md:p-4">
+                {tours.data.map((tour:any) => (
+                    <div key={tour._id} className="p-2 pl-6 sm:pl-0 md:p-4">
                         <TravelCard
-                            cardImage={cardImage}
-                            title="Discover Greece"
-                            price="$1250"
-                            ratingText="6.3 Good"
-                            description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet voluptatem vitae aut euism maximus et justo consequ dolor sit amet consectetur adipisicing elit. Nisi amet voluptatem vitae aut euism maximus et justo consequ"
-                            duration="12 Days"
-                            guests="12 guests"
+                            cardImage={tour.image}
+                            title={tour.name}
+                            price={tour.price}
+                            ratingText={tour.rating}
+                            description={tour.description}
+                            duration={tour.duration}
+                            guests={tour.guests}
                         />
                     </div>
                 ))}

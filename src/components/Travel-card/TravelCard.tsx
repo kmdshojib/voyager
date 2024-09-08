@@ -30,7 +30,7 @@ const TravelCard: FC<TravelCardProps> = ({
 }) => {
   return (
     <Card className={cn("w-60 md:w-72", className)} {...props}>
-      <Image src={cardImage} alt="cardImage" className="rounded-t-sm w-full" />
+      <Image src={cardImage} alt="cardImage" height={200} width={200} className="rounded-t-sm w-full" />
       <div className="m-3">
         <div className="mb-3 flex justify-between">
           <CardTitle className="cursor-pointer hover:text-rose-500">

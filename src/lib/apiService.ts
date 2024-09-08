@@ -3,7 +3,7 @@ import Axios, { AxiosRequestConfig, AxiosError } from "axios";
 
 const axiosBaseQuery = (): BaseQueryFn<AxiosRequestConfig, unknown, AxiosError> => async ({ url, method, data, params }) => {
   try {
-    const baseURL =" http://localhost:3000/api/"
+    const baseURL =`${process.env.baseURL}`
     
 
     Axios.defaults.baseURL = baseURL;
