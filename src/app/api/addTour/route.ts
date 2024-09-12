@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
 
         // Validate required fields (optional but recommended)
-        if (!reqBody.name || !reqBody.price || !reqBody.image || !reqBody.description || !reqBody.duration || !reqBody.guests || !reqBody.tag) {
+        if (!reqBody.name || !reqBody.price || !reqBody.image || !reqBody.description || !reqBody.duration || !reqBody.guests || !reqBody.category) {
             return NextResponse.json(
                 {
                     message: "Missing required fields",

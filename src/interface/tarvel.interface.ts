@@ -17,7 +17,7 @@ export interface ITravel {
     name: string;
     image: string;
     price: number;
-    tag: string;
+    category: string;
     rating?: number;        // Average rating calculated from reviews
     description: string;
     duration: string;

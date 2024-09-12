@@ -1,11 +1,12 @@
 import { createApi, BaseQueryFn } from "@reduxjs/toolkit/query/react";
 import Axios, { AxiosRequestConfig, AxiosError } from "axios";
-
+//  const baseUR =`${process.env.baseURL}`
+//     console.log({baseUR})
 const axiosBaseQuery = (): BaseQueryFn<AxiosRequestConfig, unknown, AxiosError> => async ({ url, method, data, params }) => {
   try {
-    const baseURL =`${process.env.baseURL}`
-    
-
+    // const baseUR =`${process.env.baseURL}`
+    // console.log({baseUR})
+    const baseURL ="http://localhost:3000/api/"
     Axios.defaults.baseURL = baseURL;
 
     const axiosConfig: AxiosRequestConfig = {

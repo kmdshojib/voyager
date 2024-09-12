@@ -17,7 +17,7 @@ const travelSchema = new Schema<ITravel>({
     image: { type: String, required: true },
     duration: { type: String, required: true },
     guests: { type: Number, required: true },
-    tag: { type: String, required: true },
+    category: { type: String, required: true },
     rating: { type: Number },  // Average rating
     tourPlan: { type: [tourPlanSchema], default: [] },
     reviews: { type: [reviewSchema], default: [] },  // Array of reviews
