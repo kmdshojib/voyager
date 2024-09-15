@@ -3,9 +3,8 @@ import { connectDb } from '@/db/dbConfig';
 import Travel from '@/model/travel.model';
 
 export async function GET(req: Request) {
-    await connectDb();
-
     try {
+        await connectDb();
         const category = "popular"
         let query = { category }; // Assuming 'category' is a field in your Travel schema
 
