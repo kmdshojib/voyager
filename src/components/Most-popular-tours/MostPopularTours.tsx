@@ -17,25 +17,27 @@ const MostPopularTours: React.FC = async () => {
             />
             <div className="mb-3">
                 <HomeCarousel>
-                    {tours.data.map((tour: any) => (
-                        <CarouselItem
-                            key={tour._id}
-                            className="px-1 md:px-2 md:basis-1/2 lg:basis-1/3"
-                        >
-                            <div className="sm:pl-0 md:p-4 mx-auto w-max">
-                                <TravelCard
-                                    id={tour._id}
-                                    cardImage={tour.image}
-                                    title={tour.name}
-                                    price={tour.price}
-                                    ratingText={tour.rating}
-                                    description={tour.description}
-                                    duration={tour.duration}
-                                    guests={tour.guests}
-                                />
-                            </div>
-                        </CarouselItem>
-                    ))}
+                    {tours.data &&
+                        tours.data.map((tour: any) => (
+                            <CarouselItem
+                                key={tour._id}
+                                className="px-1 md:px-2 md:basis-1/2 lg:basis-1/3"
+                            >
+                                <div className="sm:pl-0 md:p-4 mx-auto w-max">
+                                    <TravelCard
+                                        id={tour._id}
+                                        cardImage={tour.image}
+                                        title={tour.name}
+                                        price={tour.price}
+                                        ratingText={tour.rating}
+                                        description={tour.description}
+                                        duration={tour.duration}
+                                        guests={tour.guests}
+                                    />
+                                </div>
+                            </CarouselItem>
+                        ))
+                    }
                 </HomeCarousel>
             </div>
         </div>
