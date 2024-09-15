@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Image, { StaticImageData } from "next/image";
 import { CiFaceSmile, CiUser } from "react-icons/ci";
 import { IoMdRefresh } from "react-icons/io";
+import Link from "next/link";
 
 interface TravelCardProps {
   cardImage: string | StaticImageData;
@@ -14,6 +15,7 @@ interface TravelCardProps {
   duration: string;
   guests: string;
   className?: string;
+  id: string;
   [x: string]: any;
 }
 
@@ -26,6 +28,7 @@ const TravelCard: FC<TravelCardProps> = ({
   duration,
   guests,
   className,
+  id,
   ...props
 }) => {
   return (
@@ -34,7 +37,7 @@ const TravelCard: FC<TravelCardProps> = ({
       <div className="m-3">
         <div className="mb-3 flex justify-between">
           <CardTitle className="cursor-pointer hover:text-rose-500">
-            {title}
+            <Link href={`tours/${id}`}>{title}</Link>
           </CardTitle>
           <CardTitle className="text-[#40c1b9] font-bold">{price}</CardTitle>
         </div>

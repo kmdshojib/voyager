@@ -32,6 +32,7 @@ const FindYourPerfectTour: React.FC = () => {
                             {data.data.map((tour: any) => (
                                 <div key={tour._id} className="p-2 pl-6 sm:pl-0 md:p-4">
                                     <TravelCard
+                                        id={tour._id}
                                         cardImage={tour.image}
                                         title={tour.name}
                                         price={tour.price}
