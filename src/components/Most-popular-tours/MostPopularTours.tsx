@@ -8,7 +8,6 @@ const MostPopularTours: React.FC = async () => {
     const baseURL = process.env.baseUrl
     const data = await fetch(`${baseURL}popular-tours`)
     const tours = await data.json()
-    // console.log(tours.data)
     return (
         <div>
             <SectionHeaderText

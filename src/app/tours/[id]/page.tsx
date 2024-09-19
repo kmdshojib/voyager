@@ -1,14 +1,14 @@
 import React from 'react'
-import { useRouter } from 'next/navigation'
+import Container from '@/components/Container/Container';
+import TourTimeLine from '@/components/TourTimeLine/TourTimeLine';
 
-const Page = ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: { id: string } }) => {
     const cleanId = decodeURIComponent(params.id);
-
-    console.log(cleanId)
     return (
         <div>
-            <h1>Tour Page</h1>
-           
+            <Container>
+                <TourTimeLine id={cleanId}/>
+            </Container>
         </div>
     )
 }
