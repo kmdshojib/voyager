@@ -9,8 +9,11 @@ export const connectDb = async () => {
     }
 
     try {
-        // No need for useNewUrlParser or useUnifiedTopology in Mongoose v6+
-        await mongoose.connect(process.env.MONGO_URI!);
+        const mongoUri = process.env.NODE_ENV === "production" 
+            ? process.env.MONGO_URI_Production 
+            : process.env.MONGO_URI!;
+
+        await mongoose.connect(mongoUri!);
 
         const connection = mongoose.connection;
         connection.once("connected", () => {

@@ -1,12 +1,11 @@
+import { fetchData } from "@/hooks/fetchData";
 import Timeline from "./Timeline"
 
-interface TourTimeLineProps{
-    id: string; 
+interface TourTimeLineProps {
+    id: string;
 }
-const TourTimeLine:React.FC<TourTimeLineProps> = async ({id}) => {
-    const baseURL = process.env.baseUrl
-    const data = await fetch(`${baseURL}get-single-tour/${id}`)
-    const tour = await data.json()
+const TourTimeLine: React.FC<TourTimeLineProps> = async ({ id }) => {
+    const tour = await fetchData(`get-single-tour/${id}`)
     return (
         <div className="p-8  min-h-screen">
             <div className="max-w-2xl mx-auto relative mb-10">
