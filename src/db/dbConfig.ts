@@ -9,8 +9,8 @@ export const connectDb = async () => {
     }
 
     try {
-        const mongoUri = process.env.NODE_ENV === "production" 
-            ? process.env.MONGO_URI_Production 
+        const mongoUri = process.env.NODE_ENV === "production"
+            ? process.env.MONGO_URI_Production
             : process.env.MONGO_URI!;
 
         await mongoose.connect(mongoUri!);
@@ -23,7 +23,7 @@ export const connectDb = async () => {
 
         connection.on("error", (err) => {
             console.error("Connection error:", err);
-            process.exit(1); // Exit the process in case of connection error
+            process.exit(1);
         });
     } catch (error) {
         console.error("Something went wrong while connecting to the database:", error);

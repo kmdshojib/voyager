@@ -5,6 +5,15 @@ import SectionHeaderText from '../SectionHeaderText/SectionHeaderText'
 import HomeCarousel from '../home-carousel/homeCarousel'
 import TravelCard from '../Travel-card/TravelCard'
 import { fetchData } from '@/hooks/fetchData'
+
+async function fetchTours() {
+  const baseURL = process.env.baseUrl
+
+  const res = await fetch(`${baseURL}popular-tours`, { next: { revalidate: 3600 } })
+  if (!res.ok) throw new Error('Failed to fetch tours')
+  return res.json()
+}
+
 export default function MostPopularTours() {
   return (
     <div className="container mx-auto px-4">
