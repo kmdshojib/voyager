@@ -31,10 +31,10 @@ export default function MostPopularTours() {
 async function ToursCarousel() {
   // const tours = await fetchTours()
   const tours = await fetchData("popular-tours")
-
+  console.log(tours)
   return (
     <HomeCarousel>
-      {tours.data?.map((tour: any) => (
+      {tours?.data?.map((tour: any) => (
         <CarouselItem
           key={tour._id}
           className="sm:px-2 md:px-4 md:basis-2/4 lg:basis-1/3 "

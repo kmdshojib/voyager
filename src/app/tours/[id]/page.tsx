@@ -7,6 +7,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     return (
         <div>
             <Container>
+                
                 <TourTimeLine id={cleanId}/>
             </Container>
         </div>
