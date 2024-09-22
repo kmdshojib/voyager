@@ -7,7 +7,6 @@ export const fetchData = async (endpoint: string) => {
             const errorDetails = await res.text();
             throw new Error(`Failed to fetch: ${errorDetails}`);
         }
-        console.log(res)
         return res.json();
     } catch (error) {
         console.error('Error fetching data:', error);

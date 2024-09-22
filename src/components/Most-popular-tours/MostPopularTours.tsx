@@ -31,7 +31,6 @@ export default function MostPopularTours() {
 async function ToursCarousel() {
   // const tours = await fetchTours()
   const tours = await fetchData("popular-tours")
-  console.log(tours)
   return (
     <HomeCarousel>
       {tours?.data?.map((tour: any) => (

@@ -1,14 +1,27 @@
-"use client"
+'use client'
+
 import React, { useState } from 'react'
-import SectionHeaderText from '../SectionHeaderText/SectionHeaderText';
-import TravelCard from '../Travel-card/TravelCard';
-import { useTourCategoryQuery } from '@/lib/services/tourService';
+import SectionHeaderText from '../SectionHeaderText/SectionHeaderText'
+import { useTourCategoryQuery } from '@/lib/services/tourService'
+import TravelCard from '../Travel-card/TravelCard'
+import TravelCardSkeleton from '../Travel-card/TravelCardSkelliton'
 
-const FindYourPerfectTour: React.FC = () => {
+interface Tour {
+    _id: string
+    image: string
+    name: string
+    price: string
+    rating: string
+    description: string
+    duration: string
+    guests: string
+}
 
-    const [category, setCategory] = useState<string>("All");
+export default function FindYourPerfectTour() {
+    const [category, setCategory] = useState<string>("All")
     const { isLoading, isFetching, data } = useTourCategoryQuery(category)
-    console.log(data)
+
+    const categories = ["All", "luxury", "budget friendly", "recommended"]
 
     return (
         <div className='my-5'>
@@ -16,39 +29,43 @@ const FindYourPerfectTour: React.FC = () => {
                 header='Find Your Perfect Tour'
                 text='Nullam ac justo efficitur, tristique ligula a, pellentesque ipsum. Quisque augue ipsum, vehicula et tellus nec, maximus viverra metus. In sed viverra dui. Suspendisse laoreet velit at eros eleifend.'
             />
-            {/* categories */}
             <div className='my-5'>
                 <ul className='flex justify-center gap-3'>
-                    <li onClick={() => setCategory("All")} className='cursor-pointer text-rose-500 font-semibold'>All</li>
-                    <li onClick={() => setCategory("luxery")} className='cursor-pointer hover:text-rose-500 hover:font-semibold'>Luxery</li>
-                    <li onClick={() => setCategory("budeget friendly")} className='cursor-pointer hover:text-rose-500 hover:font-semibold'>Budeget Friendly</li>
-                    <li onClick={() => setCategory("recomended")} className='cursor-pointer hover:text-rose-500 hover:font-semibold'>Recomended</li>
+                    {categories.map((cat) => (
+                        <li
+                            key={cat}
+                            onClick={() => setCategory(cat)}
+                            className={`cursor-pointer ${category === cat ? 'text-rose-500 font-semibold' : 'hover:text-rose-500 hover:font-semibold'}`}
+                        >
+                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                        </li>
+                    ))}
                 </ul>
             </div>
-            {
-                isLoading || isFetching ? <div>Loading...</div> : <>
-                    {
-                        data && <div className='grid place-items-center grid-cols-1 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2'>
-                            {data.data.map((tour: any) => (
-                                <div key={tour._id} className="p-2 pl-6 sm:pl-0 md:p-4">
-                                    <TravelCard
-                                        id={tour._id}
-                                        cardImage={tour.image}
-                                        title={tour.name}
-                                        price={tour.price}
-                                        ratingText={tour.rating}
-                                        description={tour.description}
-                                        duration={tour.duration}
-                                        guests={tour.guests}
-                                    />
-                                </div>
-                            ))}
+            <div className='grid place-items-center grid-cols-1 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-4'>
+                {isLoading || isFetching ? (
+                    Array.from({ length: 8 }).map((_, index) => (
+                        <div key={index} className="p-2 pl-6 sm:pl-0 md:p-4">
+                            <TravelCardSkeleton />
                         </div>
-                    }
-                </>
-            }
+                    ))
+                ) : (
+                    data && data.data.map((tour: Tour) => (
+                        <div key={tour._id} className="p-2 pl-6 sm:pl-0 md:p-4">
+                            <TravelCard
+                                id={tour._id}
+                                cardImage={tour.image}
+                                title={tour.name}
+                                price={tour.price}
+                                ratingText={tour.rating}
+                                description={tour.description}
+                                duration={tour.duration}
+                                guests={tour.guests}
+                            />
+                        </div>
+                    ))
+                )}
+            </div>
         </div>
     )
 }
-
-export default FindYourPerfectTour
