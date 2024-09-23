@@ -1,5 +1,7 @@
 "use client";
+
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
     Sheet,
     SheetContent,
@@ -8,52 +10,117 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from "next/link";
+import { FaHome, FaCompass, FaEnvelope, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaHome, FaInfoCircle, FaEnvelope, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 
 interface MobileMenuProps {
     handleLogOut: () => void;
-    user: { email: string; name: string } | null; // Adjust this according to your user type
+    user: { email: string; name: string } | null;
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ handleLogOut, user }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    const menuItems = [
+        { href: "/", label: "Home", icon: FaHome },
+        { href: "/#tours", label: "Tours", icon: FaCompass },
+        { href: "/contact", label: "Contact", icon: FaEnvelope },
+    ];
+
     return (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-                <GiHamburgerMenu size={25} className="text-gray-700 hover:text-rose-500 cursor-pointer" />
+                <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                >
+                    <GiHamburgerMenu size={25} className="text-gray-700 hover:text-rose-500 cursor-pointer" />
+                </motion.div>
             </SheetTrigger>
-            <SheetContent className="text-gray-500">
+            <SheetContent className="bg-white">
                 <SheetHeader>
-                    <SheetTitle className="text-2xl font-bold text-center">Voyager</SheetTitle>
+                    <SheetTitle className="text-2xl font-bold text-center flex items-center justify-center space-x-2">
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <FaCompass className="text-rose-500 text-3xl" />
+                        </motion.div>
+                        <span>Voyager</span>
+                    </SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col space-y-4 mt-6">
-                    <Link href="/" className="flex items-center space-x-2 hover:text-rose-500">
-                        <FaHome size={20} />
-                        <p>Home</p>
-                    </Link>
-                    <Link href="/#tours" className="flex items-center space-x-2 hover:text-rose-500">
-                        <FaInfoCircle size={20} />
-                        <p>Tours</p>
-                    </Link>
-                    <Link href="/contact" className="flex items-center space-x-2 hover:text-rose-500">
-                        <FaEnvelope size={20} />
-                        <p>Contact</p>
-                    </Link>
-                    {user ? (
-                        <div onClick={handleLogOut} className="flex items-center space-x-2 cursor-pointer hover:text-rose-500">
-                            <FaSignOutAlt size={20} />
-                            <p>Sign Out</p>
-                        </div>
-                    ) : (
-                        <Link href="/signin" className="flex items-center space-x-2 hover:text-rose-500">
-                            <FaSignInAlt size={20} />
-                            <p>Sign In</p>
-                        </Link>
+                <AnimatePresence>
+                    {isOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            transition={{ staggerChildren: 0.1, delayChildren: 0.2 }}
+                            className="flex flex-col space-y-4 mt-6"
+                        >
+                            {menuItems.map((item, index) => (
+                                <MobileMenuItem
+                                    key={item.href}
+                                    href={item.href}
+                                    label={item.label}
+                                    icon={item.icon}
+                                    delay={index * 0.1}
+                                    setIsOpen={setIsOpen}
+                                />
+                            ))}
+                            {user ? (
+                                <MobileMenuItem
+                                    href="#"
+                                    label="Sign Out"
+                                    icon={FaSignOutAlt}
+                                    onClick={handleLogOut}
+                                    delay={0.3}
+                                    setIsOpen={setIsOpen}
+                                />
+                            ) : (
+                                <MobileMenuItem
+                                    href="/signin"
+                                    label="Sign In"
+                                    icon={FaSignInAlt}
+                                    delay={0.3}
+                                    setIsOpen={setIsOpen}
+                                />
+                            )}
+                        </motion.div>
                     )}
-                </div>
+                </AnimatePresence>
             </SheetContent>
         </Sheet>
     );
 };
+
+interface MobileMenuItemProps {
+    href: string;
+    label: string;
+    icon: React.ElementType;
+    delay: number;
+    onClick?: () => void;
+    setIsOpen: (isOpen: boolean) => void;
+}
+
+const MobileMenuItem: React.FC<MobileMenuItemProps> = ({ href, label, icon: Icon, delay, onClick, setIsOpen }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ delay }}
+    >
+        <Link href={href} onClick={() => { onClick?.(); setIsOpen(false); }}>
+            <motion.div
+                whileHover={{ scale: 1.05, x: 10 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center space-x-4 text-gray-700 hover:text-rose-500 transition-colors duration-200"
+            >
+                <Icon size={20} />
+                <span>{label}</span>
+            </motion.div>
+        </Link>
+    </motion.div>
+);
 
 export default MobileMenu;

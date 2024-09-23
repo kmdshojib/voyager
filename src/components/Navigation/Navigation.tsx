@@ -1,13 +1,14 @@
 "use client";
+
 import React, { useCallback } from "react";
 import Link from "next/link";
-import { GiHamburgerMenu } from "react-icons/gi";
-import MobileMenu from "../Mobile-menu/mobileMenu";
+import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { logoutUser } from "@/lib/features/authSlice";
+import MobileMenu from "../Mobile-menu/mobileMenu";
+import { FaCompass } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
-  // Accessing the user object from the auth state
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
 
@@ -15,44 +16,64 @@ const Navbar: React.FC = () => {
     dispatch(logoutUser());
   }, [dispatch]);
 
+  const navItems = [
+    { href: "/", label: "Home" },
+    { href: "/#tours", label: "Tours" },
+    { href: "/contact", label: "Contact" },
+  ];
+
   return (
-    <nav className="bg-white p-4 shadow-sm">
+    <motion.nav
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="bg-white p-4 shadow-md"
+    >
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-gray-900 text-lg font-bold">
-          {/* logo */}
-          <Link href="/">
-            <p>Voyager</p>
-          </Link>
-        </div>
-        <div className="hidden md:flex space-x-4">
-          <Link href="/">
-            <p className="text-gray-500 hover:text-rose-500">Home</p>
-          </Link>
-          <Link href="/about">
-            <p className="text-gray-500 hover:text-rose-500">Tours</p>
-          </Link>
-          <Link href="/contact">
-            <p className="text-gray-500 hover:text-rose-500">Contact</p>
-          </Link>
+        <Link href="/" className="flex items-center space-x-2">
+          <motion.div
+            whileHover={{ rotate: 360 }}
+            transition={{ duration: 0.5 }}
+          >
+            <FaCompass className="text-rose-500 text-3xl" />
+          </motion.div>
+          <span className="text-gray-900 text-xl font-bold">Voyager</span>
+        </Link>
+        <div className="hidden md:flex space-x-6">
+          {navItems.map((item) => (
+            <NavLink key={item.href} href={item.href} label={item.label} />
+          ))}
           {user?.email ? (
-            <p
+            <motion.p
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={handleLogOut}
-              className="text-gray-500 cursor-pointer hover:text-rose-500"
+              className="text-gray-500 cursor-pointer hover:text-rose-500 transition-colors duration-200"
             >
               Sign out
-            </p>
+            </motion.p>
           ) : (
-            <Link href="/signin">
-              <p className="text-gray-500 hover:text-rose-500">Sign In</p>
-            </Link>
+            <NavLink href="/signin" label="Sign In" />
           )}
         </div>
-        <div className="flex md:hidden cursor-pointer">
+        <div className="md:hidden">
           <MobileMenu user={user} handleLogOut={handleLogOut} />
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
+
+const NavLink: React.FC<{ href: string; label: string }> = ({ href, label }) => (
+  <Link href={href}>
+    <motion.p
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="text-gray-500 hover:text-rose-500 transition-colors duration-200"
+    >
+      {label}
+    </motion.p>
+  </Link>
+);
 
 export default Navbar;

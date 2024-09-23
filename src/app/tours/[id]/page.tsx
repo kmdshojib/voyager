@@ -1,14 +1,18 @@
 import React from 'react'
-import Container from '@/components/Container/Container';
-import TourTimeLine from '@/components/TourTimeLine/TourTimeLine';
+import Container from '@/components/Container/Container'
+import TourTimeLine from '@/components/TourTimeLine/TourTimeLine'
+import TourDetails from '@/components/TourDetailes/TourDetails'
+import TourNavigation from '@/components/TourNavigation/TourNavigation'
+import TourContent from './TourContent'
+import { fetchData } from '@/hooks/fetchData'
 
 const Page = async ({ params }: { params: { id: string } }) => {
-    const cleanId = decodeURIComponent(params.id);
+    const cleanId = decodeURIComponent(params.id)
+    const tour = await fetchData(`get-single-tour/${cleanId}`)
     return (
         <div>
             <Container>
-                
-                <TourTimeLine id={cleanId}/>
+                <TourContent data={tour} />
             </Container>
         </div>
     )
