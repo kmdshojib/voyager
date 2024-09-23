@@ -10,23 +10,15 @@ export const connectDb = async () => {
 
     try {
         const mongoUri = process.env.NODE_ENV === "production"
-            ? process.env.MONGO_URI_Production
+            ? process.env.MONGO_URI_Production!
             : process.env.MONGO_URI!;
+        await mongoose.connect(mongoUri);
 
-        await mongoose.connect(mongoUri!);
+        isConnected = true;
+        console.log("Connection established with the database.");
 
-        const connection = mongoose.connection;
-        connection.once("connected", () => {
-            console.log("Connection established with the database.");
-            isConnected = true; // Mark as connected
-        });
-
-        connection.on("error", (err) => {
-            console.error("Connection error:", err);
-            process.exit(1);
-        });
     } catch (error) {
-        console.error("Something went wrong while connecting to the database:", error);
-        throw error; // Throw the error to handle it in the calling function
+        console.error("Error connecting to the database:", error);
+        throw error; // Rethrow to be handled in the calling function
     }
 };

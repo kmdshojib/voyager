@@ -5,11 +5,19 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await connectDb();
-        const id = params.id;
-        const tour = await Travel.findById({ _id: id });
+
+        const { id } = params;
+
+        const tour = await Travel.findById(id);
+
+        if (!tour) {
+            return NextResponse.json({ message: 'Tour not found' }, { status: 404 });
+        }
+
         return NextResponse.json(tour, { status: 200 });
-    } catch (e) {
-        console.error(e);
-        return NextResponse.json({ error: 'Error fetching ID' }, { status: 500 });
+    } catch (error) {
+        console.error('Error fetching tour:', error);
+
+        return NextResponse.json({ error: 'Failed to fetch tour data' }, { status: 500 });
     }
 }
