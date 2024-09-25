@@ -1,7 +1,8 @@
 import { connectDb } from "@/db/dbConfig";
+import User from "@/model/user.model";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-import User from './src/model/user.model';
+
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -11,16 +12,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   secret: process.env.AUTH_SECRET,
+  // debug: true,
   callbacks: {
-    async session({ session, user }) {
-      session.user.id = user.id;
+    async jwt({ token, user }) {
+      // When user signs in, persist their ID in the JWT token
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Add the user ID from the token to the session object
+      if (token) {
+        session.user.id = token.id as string;
+      }
       return session;
     },
-    async signIn({ user, account, profile}) {
-      // Ensure DB is connected
-
+    async signIn({ user, account, profile }) {
       try {
-        // Check if the user already exists in the database
+        await connectDb(); // Ensure the database is connected
         let dbUser = await User.findOne({ email: user.email });
         if (!dbUser) {
           dbUser = await User.create({
@@ -29,13 +39,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             avatar: user.image,
             socialAuthentication: true,
           });
-
         }
-        console.log(dbUser); // Log a success message
+        
         return true; // Allow the sign-in
       } catch (error) {
         console.error("Sign-in error:", error);
-        return false; // Reject the sign-in if there's an error
+        return false; // Reject the sign-in on error
       }
     },
   },

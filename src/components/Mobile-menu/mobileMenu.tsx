@@ -1,49 +1,48 @@
-"use client";
+"use client"
 
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import {
     Sheet,
     SheetContent,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "@/components/ui/sheet";
-import Link from "next/link";
-import { FaHome, FaCompass, FaEnvelope, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import { GiHamburgerMenu } from "react-icons/gi";
+} from "@/components/ui/sheet"
+import Link from "next/link"
+import { FaHome, FaCompass, FaEnvelope, FaSignInAlt, FaSignOutAlt, FaUser, FaBook } from "react-icons/fa"
+import { GiHamburgerMenu } from "react-icons/gi"
 
 interface MobileMenuProps {
-    handleLogOut: () => void;
-    user: { email: string; name: string } | null;
+    handleLogOut: () => void
+    user: { email: string; name: string } | null
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ handleLogOut, user }) => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = React.useState(false)
 
     const menuItems = [
         { href: "/", label: "Home", icon: FaHome },
         { href: "/#tours", label: "Tours", icon: FaCompass },
         { href: "/contact", label: "Contact", icon: FaEnvelope },
-    ];
+    ]
+
+    const userMenuItems = [
+        { href: "/my-reviews", label: "My Reviews", icon: FaUser },
+        { href: "/my-bookings", label: "My Bookings", icon: FaBook },
+    ]
 
     return (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-                <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                >
+                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <GiHamburgerMenu size={25} className="text-gray-700 hover:text-rose-500 cursor-pointer" />
                 </motion.div>
             </SheetTrigger>
             <SheetContent className="bg-white">
                 <SheetHeader>
                     <SheetTitle className="text-2xl font-bold text-center flex items-center justify-center space-x-2">
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 0.5 }}
-                        >
+                        <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.5 }}>
                             <FaCompass className="text-rose-500 text-3xl" />
                         </motion.div>
                         <span>Voyager</span>
@@ -69,20 +68,32 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ handleLogOut, user }) => {
                                 />
                             ))}
                             {user ? (
-                                <MobileMenuItem
-                                    href="#"
-                                    label="Sign Out"
-                                    icon={FaSignOutAlt}
-                                    onClick={handleLogOut}
-                                    delay={0.3}
-                                    setIsOpen={setIsOpen}
-                                />
+                                <>
+                                    {userMenuItems.map((item, index) => (
+                                        <MobileMenuItem
+                                            key={item.href}
+                                            href={item.href}
+                                            label={item.label}
+                                            icon={item.icon}
+                                            delay={(menuItems.length + index) * 0.1}
+                                            setIsOpen={setIsOpen}
+                                        />
+                                    ))}
+                                    <MobileMenuItem
+                                        href="#"
+                                        label="Sign Out"
+                                        icon={FaSignOutAlt}
+                                        onClick={handleLogOut}
+                                        delay={(menuItems.length + userMenuItems.length) * 0.1}
+                                        setIsOpen={setIsOpen}
+                                    />
+                                </>
                             ) : (
                                 <MobileMenuItem
                                     href="/signin"
                                     label="Sign In"
                                     icon={FaSignInAlt}
-                                    delay={0.3}
+                                    delay={menuItems.length * 0.1}
                                     setIsOpen={setIsOpen}
                                 />
                             )}
@@ -91,16 +102,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ handleLogOut, user }) => {
                 </AnimatePresence>
             </SheetContent>
         </Sheet>
-    );
-};
+    )
+}
 
 interface MobileMenuItemProps {
-    href: string;
-    label: string;
-    icon: React.ElementType;
-    delay: number;
-    onClick?: () => void;
-    setIsOpen: (isOpen: boolean) => void;
+    href: string
+    label: string
+    icon: React.ElementType
+    delay: number
+    onClick?: () => void
+    setIsOpen: (isOpen: boolean) => void
 }
 
 const MobileMenuItem: React.FC<MobileMenuItemProps> = ({ href, label, icon: Icon, delay, onClick, setIsOpen }) => (
@@ -110,7 +121,7 @@ const MobileMenuItem: React.FC<MobileMenuItemProps> = ({ href, label, icon: Icon
         exit={{ opacity: 0, y: 20 }}
         transition={{ delay }}
     >
-        <Link href={href} onClick={() => { onClick?.(); setIsOpen(false); }}>
+        <Link href={href} onClick={() => { onClick?.(); setIsOpen(false) }}>
             <motion.div
                 whileHover={{ scale: 1.05, x: 10 }}
                 whileTap={{ scale: 0.95 }}
@@ -121,6 +132,6 @@ const MobileMenuItem: React.FC<MobileMenuItemProps> = ({ href, label, icon: Icon
             </motion.div>
         </Link>
     </motion.div>
-);
+)
 
-export default MobileMenu;
+export default MobileMenu

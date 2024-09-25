@@ -7,7 +7,7 @@ interface InitialUser extends IUser {
 
 }
 // Define the initial state with IUser or null
-const initialState: { user: InitialUser | null } = {
+export const initialState: { user: InitialUser | null } = {
     user: null
 };
 

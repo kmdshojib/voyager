@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useCallback } from "react";
 import { signIn, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react"
 
 const FormSchema = z.object({
   email: z.string().min(2, {
@@ -35,6 +36,7 @@ const FormSchema = z.object({
 
 export default function Signin() {
   const [signinMutation, { isLoading }] = useSigninUserMutation();
+
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const router = useRouter();
@@ -45,7 +47,32 @@ export default function Signin() {
       password: "",
     },
   });
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession();
+      const { user } = session as any
+      console.log(session)
+      if (user) {
+        const user = {
+          name: session?.user?.name,
+          email: session?.user?.email,
+          avatar: session?.user?.image,
+          _id: session?.user?.id,
+          socialAuthentication: true
+        }
+        router.push("/")
+        toast({
+          title: `Hello, ${user.name} logged in successfully`,
+          variant: "default",
+          className: "bg-green-500 text-white",
+          duration: 3000,
+        });
+        dispatch(loginUser(user as any));
+      }
+    };
 
+    fetchSession(); // Call the async function
+  }, []);
   // Handling regular sign-in (with email and password)
   const onSubmit = useCallback(
     async (data: z.infer<typeof FormSchema>) => {
@@ -70,44 +97,15 @@ export default function Signin() {
     },
     [dispatch, router, signinMutation]
   );
-
   // Handling Google Sign-In
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signIn("google",{ redirectTo: "/" });
-      console.log(result, user)
-
-      // if (result?.ok) {
-      //   const session = await getSession();
-      //   if (session?.user) {
-      //     const { user } = session;
-      //     console.log(user);
-      //     toast({
-      //       title: `Welcome, ${user.name}`,
-      //       variant: "default",
-      //       className: "bg-green-500 text-white",
-      //       duration: 3000,
-      //     });
-      //     router.push("/");
-      //   }
-      // } else {
-      //   console.error('Google Sign-In failed:', result);
-      //   toast({
-      //     title: "Google Sign-In failed",
-      //     variant: "destructive",
-      //     className: "bg-red-500 text-white",
-      //   });
-      // }
+      await signIn("google", { redirect: true });
     } catch (error) {
       console.error("Google Sign-In Error:", error);
-      toast({
-        title: "Error during Google Sign-In",
-        variant: "destructive",
-        className: "bg-red-500 text-white",
-      });
+
     }
   };
-
 
   return (
     <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-gray-50 text-gray-800 my-5 ">
