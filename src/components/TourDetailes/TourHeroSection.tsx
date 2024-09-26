@@ -3,9 +3,10 @@ import Image from 'next/image'
 interface TourHeroSectionProps {
     url: string
     title: string
+    subitile: string
 }
 
-const TourHeroSection: React.FC<TourHeroSectionProps> = ({ url, title }) => {
+const TourHeroSection: React.FC<TourHeroSectionProps> = ({ url, title, subitile }) => {
     return (
         <div className="relative w-full overflow-hidden" style={{ height: '50vh' }}>
             <Image
@@ -21,7 +22,7 @@ const TourHeroSection: React.FC<TourHeroSectionProps> = ({ url, title }) => {
                     {title}
                 </h1>
                 <p className="text-lg md:text-xl lg:text-2xl text-center">
-                    HELLENIC REPUBLIC
+                    {subitile}
                 </p>
             </div>
         </div>

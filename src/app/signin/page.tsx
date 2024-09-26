@@ -23,7 +23,6 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useCallback } from "react";
 import { signIn, getSession } from "next-auth/react";
-import { useSession } from "next-auth/react"
 
 const FormSchema = z.object({
   email: z.string().min(2, {
@@ -71,7 +70,7 @@ export default function Signin() {
       }
     };
 
-    fetchSession(); // Call the async function
+    fetchSession(); 
   }, []);
   // Handling regular sign-in (with email and password)
   const onSubmit = useCallback(

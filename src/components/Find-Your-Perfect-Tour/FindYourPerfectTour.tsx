@@ -44,7 +44,7 @@ export default function FindYourPerfectTour() {
             </div>
             <div className='grid place-items-center grid-cols-1 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-4'>
                 {isLoading || isFetching ? (
-                    Array.from({ length: 8 }).map((_, index) => (
+                    Array.from({ length: 6 }).map((_, index) => (
                         <div key={index} className="p-2 pl-6 sm:pl-0 md:p-4">
                             <TravelCardSkeleton />
                         </div>

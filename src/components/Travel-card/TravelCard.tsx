@@ -1,22 +1,21 @@
-import { FC } from "react";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import Image, { StaticImageData } from "next/image";
-import { CiFaceSmile, CiUser } from "react-icons/ci";
-import { IoMdRefresh } from "react-icons/io";
-import Link from "next/link";
+import { FC } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { CiFaceSmile, CiUser } from "react-icons/ci"
+import { IoMdRefresh } from "react-icons/io"
 
 interface TravelCardProps {
-  cardImage: string | StaticImageData;
-  title: string;
-  price: string;
-  ratingText: string;
-  description: string;
-  duration: string;
-  guests: string;
-  className?: string;
-  id: string;
-  [x: string]: any;
+  cardImage: string
+  title: string
+  price: string
+  ratingText: string
+  description: string
+  duration: string
+  guests: string
+  id: string
+  className?: string
 }
 
 const TravelCard: FC<TravelCardProps> = ({
@@ -27,43 +26,48 @@ const TravelCard: FC<TravelCardProps> = ({
   description,
   duration,
   guests,
-  className,
   id,
-  ...props
+  className,
 }) => {
   return (
-    <Card className={cn("w-60 md:w-72", className)} {...props}>
-      <Image src={cardImage} alt="cardImage" height={200} width={200} className="rounded-t-sm w-full" />
-      <div className="m-3">
-        <div className="mb-3 flex justify-between">
-          <CardTitle className="cursor-pointer hover:text-rose-500">
-            <Link href={`tours/${id}`}>{title}</Link>
-          </CardTitle>
-          <CardTitle className="text-[#40c1b9] font-bold">{price}</CardTitle>
-        </div>
-        <div className="flex">
-          <span className="mt-0.5">
-            <CiFaceSmile />
-          </span>
-          <CardDescription className="ml-3">{ratingText}</CardDescription>
-        </div>
-        <CardDescription className="mt-3 line-clamp-2 mb-2">
-          {description}
-        </CardDescription>
-        <hr />
-        <div className="flex m-2">
-          <div className="flex mr-3">
-            <IoMdRefresh className="text-gray-500 mt-0.5" />
-            <CardDescription>{duration}</CardDescription>
-          </div>
-          <div className="flex">
-            <CiUser className="text-gray-500 mt-0.5" />
-            <CardDescription>{guests}</CardDescription>
-          </div>
-        </div>
+    <Card className={cn("w-full max-w-sm overflow-hidden", className)}>
+      <div className="relative h-48 w-full">
+        <Image
+          src={cardImage}
+          alt={`${title} tour`}
+          layout="fill"
+          objectFit="cover"
+          className="transition-transform duration-300 hover:scale-105"
+        />
       </div>
+      <CardContent className="p-4">
+        <div className="flex justify-between items-center mb-2">
+          <CardTitle className="text-lg">
+            <Link href={`tours/${id}`} className="hover:text-primary transition-colors">
+              {title}
+            </Link>
+          </CardTitle>
+          <span className="text-xl font-bold text-primary">{price}</span>
+        </div>
+        <div className="flex items-center mb-2">
+          <CiFaceSmile className="text-yellow-400 mr-1" aria-hidden="true" />
+          <CardDescription>{ratingText}</CardDescription>
+        </div>
+        <CardDescription className="mb-3 line-clamp-2">{description}</CardDescription>
+        <hr className="mb-3" />
+        <div className="flex justify-between text-sm text-gray-500">
+          <div className="flex items-center">
+            <IoMdRefresh className="mr-1" aria-hidden="true" />
+            <span>{duration}</span>
+          </div>
+          <div className="flex items-center">
+            <CiUser className="mr-1" aria-hidden="true" />
+            <span>{guests}</span>
+          </div>
+        </div>
+      </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default TravelCard;
+export default TravelCard

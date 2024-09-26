@@ -14,14 +14,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Image from "next/image"
+import { signOut } from "next-auth/react"
 
 const Navbar: React.FC = () => {
   const user = useAppSelector((state) => state.auth.user)
   const dispatch = useAppDispatch()
 
   const handleLogOut = useCallback(() => {
+    if (user?.socialAuthentication) {
+      signOut()
+    }
     dispatch(logoutUser())
-  }, [dispatch])
+  }, [dispatch, user?.socialAuthentication])
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -68,7 +73,7 @@ const NavLink: React.FC<{ href: string; label: string }> = ({ href, label }) => 
   </Link>
 )
 
-const UserDropdown: React.FC<{ user: { email: string; name: string }; handleLogOut: () => void }> = ({
+const UserDropdown: React.FC<{ user: { email: string; name: string; avatar?: string }; handleLogOut: () => void }> = ({
   user,
   handleLogOut,
 }) => (
@@ -79,7 +84,7 @@ const UserDropdown: React.FC<{ user: { email: string; name: string }; handleLogO
         whileTap={{ scale: 0.95 }}
         className="flex items-center space-x-2 cursor-pointer"
       >
-        <FaUser className="text-gray-500" />
+        {user?.avatar ? <Image src={user?.avatar} alt="user avatar" width={32} height={32} className="rounded-full" /> : <FaUser className="text-gray-500 text-3xl" />}
         <span className="text-gray-500">{user.name}</span>
       </motion.div>
     </DropdownMenuTrigger>

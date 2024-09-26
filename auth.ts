@@ -21,6 +21,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return token;
     },
+    async redirect({ url, baseUrl }) {
+      // If the user is signing in, redirect to '/home'
+      
+      if (url === '/api/auth/') {
+        return `${baseUrl}/home`;
+      }
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      if (new URL(url).origin === baseUrl) return url;
+
+      // Default redirect to the baseUrl
+      return baseUrl;
+    },
     async session({ session, token }) {
       // Add the user ID from the token to the session object
       if (token) {
@@ -40,7 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             socialAuthentication: true,
           });
         }
-        
+
         return true; // Allow the sign-in
       } catch (error) {
         console.error("Sign-in error:", error);

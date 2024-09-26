@@ -32,12 +32,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <StoreProvider>
-              <Navbar />
-              {children}
-              <Toaster />
-              <Footer />
-            </StoreProvider>
+            <Navbar />
+            {children}
+            <Toaster />
+            <Footer />
           </ThemeProvider>
         </StoreProvider>
       </body>

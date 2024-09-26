@@ -36,7 +36,7 @@ async function ToursCarousel() {
       {tours?.data?.map((tour: any) => (
         <CarouselItem
           key={tour._id}
-          className="sm:px-2 md:px-4 md:basis-2/4 lg:basis-1/3 "
+          className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
         >
           <TravelCard
             id={tour._id}

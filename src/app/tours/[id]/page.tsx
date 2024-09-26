@@ -13,7 +13,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     const tour = await fetchData(`get-single-tour/${cleanId}`)
     return (
         <div>
-            <TourHeroSection title={tour.name} url={tour.image} />
+            <TourHeroSection subitile={tour.description}  title={tour.name} url={tour.image} />
             <Container>
                 <TourContent data={tour} />
                 

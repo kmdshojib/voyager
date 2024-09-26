@@ -1,4 +1,4 @@
-import { NextResponse,NextRequest } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { connectDb } from '@/db/dbConfig';
 import Travel from '@/model/travel.model';
 
@@ -12,12 +12,11 @@ export async function GET(req: Request) {
 
         let query = {};
 
-        // If a category is provided and it's not "All", filter by category
         if (category && category !== 'All') {
-            query = { category }; // Assuming 'category' is a field in your Travel schema
+            query = { category };
         }
 
-        const tours = await Travel.find(query);
+        const tours = await Travel.find(query).limit(6);
 
         return NextResponse.json({ data: tours, status: 200 });
 
