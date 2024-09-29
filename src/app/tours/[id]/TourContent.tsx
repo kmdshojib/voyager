@@ -5,6 +5,7 @@ import TourNavigation from '@/components/TourNavigation/TourNavigation'
 import TourDetails from '@/components/TourDetailes/TourDetails'
 import TourTimeLine from '@/components/TourTimeLine/TourTimeLine'
 import TourBookingForm from '@/components/TourBookingFrom/TourBookingForm'
+import TourReview from '@/components/Tour-reviews/TourReview'
 
 type TourContentProps = {
     data?: any
@@ -19,6 +20,7 @@ export default function TourContent({ data }: TourContentProps) {
                 <TourNavigation activeSection={activeSection} onSectionChange={setActiveSection} />
                 {activeSection === 'Information' && <TourDetails data={data} />}
                 {activeSection === 'Tour Plan' && <TourTimeLine data={data} />}
+                {activeSection === 'Reviews' && <TourReview />}
                 {/* Add other sections as needed */}
             </div>
             <div className="mb-2">

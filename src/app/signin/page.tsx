@@ -49,17 +49,17 @@ export default function Signin() {
   useEffect(() => {
     const fetchSession = async () => {
       const session = await getSession();
-      const { user } = session as any
-      console.log(session)
-      if (user) {
+
+      if (session?.user) {
         const user = {
-          name: session?.user?.name,
-          email: session?.user?.email,
-          avatar: session?.user?.image,
-          _id: session?.user?.id,
-          socialAuthentication: true
-        }
-        router.push("/")
+          name: session.user.name,
+          email: session.user.email,
+          avatar: session.user.image,
+          _id: session.user.id,
+          socialAuthentication: true,
+        };
+
+        router.push("/"); 
         toast({
           title: `Hello, ${user.name} logged in successfully`,
           variant: "default",
@@ -70,8 +70,9 @@ export default function Signin() {
       }
     };
 
-    fetchSession(); 
+    fetchSession();
   }, []);
+  
   // Handling regular sign-in (with email and password)
   const onSubmit = useCallback(
     async (data: z.infer<typeof FormSchema>) => {

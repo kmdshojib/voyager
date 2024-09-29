@@ -80,11 +80,10 @@ const DealsDiscount: React.FC = () => {
                 </div>
             </div>
             {/* top reviews */}
-            <div className='border-[0.01px] border-gray-300 w-full md:w-3/4 lg:w-2/5 my-3 rounded-sm shadow-sm h-80 overflow-hidden self-center '>
-                <div className='m-5'>
+            <div className='border-[0.01px] border-gray-300 w-full md:w-3/4 lg:w-2/5 my-3 rounded-sm shadow-sm h-fit overflow-hidden self-center'>
+                <div className='m-5 h-fit flex flex-col'>
                     <h1 className='text-2xl mb-3'>Top Reviews</h1>
-                    <hr />
-                    {/* reviews */}
+                    <hr className='mb-3' />
                     <ReviewsCarousel>
                         {dummyData.map((data, index) => (
                             <CarouselItem key={index}>

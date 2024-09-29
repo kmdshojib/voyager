@@ -3,17 +3,38 @@ import { apiService } from "./apiService";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { rootReducer } from './rootreducer';
 import { createWrapper } from "next-redux-wrapper";
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-export const makeStore = () =>
-    configureStore({
-        reducer: rootReducer,
-        middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat(apiService.middleware),
-    });
+const persistConfig = {
+  key: 'root',
+  storage,
+};
 
-setupListeners(makeStore);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// Create store
+export const makeStore = () => {
+  const store = configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }).concat(apiService.middleware),
+  });
+
+  setupListeners(store.dispatch);
+
+  return store;
+};
+
+
+export const wrapper = createWrapper(makeStore);
+
+// Create persistor (can be used separately)
+export const persistor = (store: ReturnType<typeof makeStore>) => persistStore(store);
+
+// Types
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];
-export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

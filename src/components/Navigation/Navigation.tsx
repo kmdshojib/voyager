@@ -84,7 +84,7 @@ const UserDropdown: React.FC<{ user: { email: string; name: string; avatar?: str
         whileTap={{ scale: 0.95 }}
         className="flex items-center space-x-2 cursor-pointer"
       >
-        {user?.avatar ? <Image src={user?.avatar} alt="user avatar" width={32} height={32} className="rounded-full" /> : <FaUser className="text-gray-500 text-3xl" />}
+        {user?.avatar ? <Image src={user?.avatar} alt="user avatar" width={32} height={32} className="rounded-full" /> : <FaUser className="text-gray-500 text-2xl" />}
         <span className="text-gray-500">{user.name}</span>
       </motion.div>
     </DropdownMenuTrigger>

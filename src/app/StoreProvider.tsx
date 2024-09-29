@@ -1,18 +1,43 @@
 "use client";
 
-import { AppStore, makeStore } from "@/lib/store";
-import { useRef } from "react";
+import { makeStore, persistor as createPersistor, AppStore } from "@/lib/store";
+import { useEffect, useRef, useState } from "react";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
-interface StoreProvider {
+interface StoreProviderProps {
   children: React.ReactNode;
 }
-const StoreProvider = ({ children }: StoreProvider) => {
+
+const StoreProvider = ({ children }: StoreProviderProps) => {
   const storeRef = useRef<AppStore>();
+  const persistorRef = useRef<ReturnType<typeof createPersistor>>();
+  
+  const [isClient, setIsClient] = useState(false); 
+
+  useEffect(() => {
+    setIsClient(true); 
+  }, []);
+
   if (!storeRef.current) {
-    // helps to create store instance
+    // Initialize store and persistor
     storeRef.current = makeStore();
+    persistorRef.current = createPersistor(storeRef.current);
   }
-  return <Provider store={storeRef.current}>{children}</Provider>;
+
+  if (!storeRef.current || !persistorRef.current) return null;
+
+  return (
+    <Provider store={storeRef.current}>
+      {isClient ? ( // Render PersistGate only on the client side
+        <PersistGate loading={null} persistor={persistorRef.current}>
+          {children}
+        </PersistGate>
+      ) : (
+        children // Render children immediately if not on the client
+      )}
+    </Provider>
+  );
 };
+
 export default StoreProvider;

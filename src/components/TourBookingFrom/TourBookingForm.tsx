@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -13,10 +13,8 @@ import { Calendar } from "@/components/ui/calendar"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -26,7 +24,8 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { defaultMaxListeners } from 'events'
+import { useAppSelector } from '@/lib/hooks'
+import { useToast } from "@/components/ui/use-toast"
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -50,8 +49,10 @@ const formSchema = z.object({
     message: z.string().optional(),
 })
 
-const TourBookingForm = () => {
+export default function TourBookingForm() {
     const [isAvailable, setIsAvailable] = useState(false)
+    const user = useAppSelector((state) => state.auth.user)
+    const { toast } = useToast()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -65,7 +66,23 @@ const TourBookingForm = () => {
         },
     })
 
+    useEffect(() => {
+        if (user) {
+            form.setValue('name', user.name || '')
+            form.setValue('email', user.email || '')
+            form.setValue('confirmEmail', user.email || '')
+        }
+    }, [user, form])
+
     function onSubmit(values: z.infer<typeof formSchema>) {
+        if (!user) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Please sign in to book this tour.",
+            })
+            return
+        }
         console.log(values)
         // Here you would typically send the form data to your server
     }
@@ -195,7 +212,7 @@ const TourBookingForm = () => {
                     >
                         Check Availability
                     </Button>
-                    <Button type="submit" className="w-full ">
+                    <Button type="submit" className="w-full">
                         BOOK NOW
                     </Button>
                 </form>
@@ -203,4 +220,3 @@ const TourBookingForm = () => {
         </div>
     )
 }
-export default TourBookingForm
