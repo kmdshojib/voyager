@@ -52,7 +52,7 @@ const HeroCarousel = () => {
     return (
         <div className="relative w-full h-[450px] overflow-hidden">
             <Carousel
-                plugins={[autoplay.createAutoplayPlugin()]}
+                plugins={[autoplay.createAutoplayPlugin()] as any}
                 className="w-full h-full"
                 setApi={setApi}
             >

@@ -71,7 +71,7 @@ export default function Signin() {
     };
 
     fetchSession();
-  }, []);
+  }, [dispatch,router]);
   
   // Handling regular sign-in (with email and password)
   const onSubmit = useCallback(
