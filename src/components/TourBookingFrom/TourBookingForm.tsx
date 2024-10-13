@@ -54,6 +54,8 @@ export default function TourBookingForm() {
     const user = useAppSelector((state) => state.auth.user)
     const { toast } = useToast()
 
+    console.log(user)
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -83,7 +85,7 @@ export default function TourBookingForm() {
             })
             return
         }
-        console.log(values)
+        console.log({values})
         // Here you would typically send the form data to your server
     }
 
