@@ -11,10 +11,6 @@ export async function POST(req: NextRequest) {
         const reqBody = await req.json();
         const { email, password, name }: IUser = reqBody as IUser;
 
-        // Validate input fields
-        // if ([name, email, password].some(field => !field.trim())) {
-        //     return NextResponse.json({ message: "All fields are required", status: 400 });
-        // }
         if (!password) {
             return NextResponse.json({ message: "Password is required", status: 400 });
         }
