@@ -7,8 +7,15 @@ export const tourService = apiService.injectEndpoints({
                 url: `getTour?category=${category}`,
                 method: "GET"
             })
+        }),
+        addBookings: build.mutation<any, any>({
+            query: (booking: any) => ({
+                url: "add-booking",
+                method: "POST",
+                data: booking
+            })
         })
     })
 })
 
-export const { useTourCategoryQuery } = tourService
+export const { useTourCategoryQuery,useAddBookingsMutation } = tourService

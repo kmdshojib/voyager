@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
+import { Calendar as CalendarIcon, Loader2 } from 'lucide-react'
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/popover"
 import { useAppSelector } from '@/lib/hooks'
 import { useToast } from "@/components/ui/use-toast"
+import { useAddBookingsMutation } from '@/lib/services/tourService'
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -53,6 +54,7 @@ export default function TourBookingForm() {
     const [isAvailable, setIsAvailable] = useState(false)
     const user = useAppSelector((state) => state.auth.user)
     const { toast } = useToast()
+    const [addTour,{isLoading} ] = useAddBookingsMutation()
 
     console.log(user)
 
@@ -76,18 +78,45 @@ export default function TourBookingForm() {
         }
     }, [user, form])
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
         if (!user) {
             toast({
                 variant: "destructive",
                 title: "Error",
                 description: "Please sign in to book this tour.",
-            })
-            return
+            });
+            return;
         }
-        console.log({values})
-        // Here you would typically send the form data to your server
-    }
+    
+        try {
+            const response: any = await addTour(values);
+    
+            if (response) {
+                const { message } = response;
+                console.log(response, message);
+                
+                toast({
+                    title: message || "Tour booked successfully!",
+                    variant: "default",
+                    className: "bg-green-500 text-white",
+                    duration: 3000,
+                });
+            } else {
+                throw new Error(response?.message || "Booking failed.");
+            }
+        } catch (error: any) {
+            console.error("Error booking tour:", error);
+    
+            toast({
+                title: "Booking Error",
+                description: error?.message || "An unexpected error occurred.",
+                variant: "destructive",
+                className: "bg-red-500 text-white",
+                duration: 3000,
+            });
+        }
+    }, [user]); // Added `user` to dependencies
+    
 
     return (
         <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -214,9 +243,14 @@ export default function TourBookingForm() {
                     >
                         Check Availability
                     </Button>
-                    <Button type="submit" className="w-full">
+                    {
+                        isLoading ? <Button type="submit" className="w-full" disabled>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      </Button> : <Button type="submit" className="w-full">
                         BOOK NOW
                     </Button>
+                    }
+                    
                 </form>
             </Form>
         </div>
