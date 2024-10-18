@@ -8,6 +8,7 @@ interface IBookingModel extends Document {
     phone: string;
     date: Date;
     tickets: string;
+    userId: string;
     message?: string;
 }
 
@@ -19,6 +20,7 @@ const bookingSchema = new Schema<IBookingModel>({
     phone: { type: String, required: true, minlength: 10 },
     date: { type: Date, required: true },
     tickets: { type: String, required: true },
+    userId:{ type: String, required: true},
     message: { type: String },
 });
 

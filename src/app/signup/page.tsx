@@ -67,6 +67,7 @@ export default function SignUp() {
     }
   }, [router,signUpUserMutation]);
 
+
   return (
     <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-gray-50 text-gray-800 my-5 ">
       <h1 className="text-2xl font-bold text-center">SignUp</h1>

@@ -48,6 +48,7 @@ const formSchema = z.object({
         message: "Please enter the number of tickets.",
     }),
     message: z.string().optional(),
+    userId: z.string(),
 })
 
 export default function TourBookingForm() {
@@ -87,6 +88,8 @@ export default function TourBookingForm() {
             });
             return;
         }
+        const userID = user._id;
+        values.userId = userID;
     
         try {
             const response: any = await addTour(values);

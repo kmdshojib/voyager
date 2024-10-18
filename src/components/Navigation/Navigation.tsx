@@ -73,7 +73,7 @@ const NavLink: React.FC<{ href: string; label: string }> = ({ href, label }) => 
   </Link>
 )
 
-const UserDropdown: React.FC<{ user: { email: string; name: string; avatar?: string }; handleLogOut: () => void }> = ({
+const UserDropdown: React.FC<{ user: { email: string; name: string; avatar?: string,_id:string }; handleLogOut: () => void }> = ({
   user,
   handleLogOut,
 }) => (
@@ -95,7 +95,7 @@ const UserDropdown: React.FC<{ user: { email: string; name: string; avatar?: str
         </Link>
       </DropdownMenuItem>
       <DropdownMenuItem asChild>
-        <Link href="/my-bookings" className="w-full">
+        <Link href={`/mybookings/${user._id}`} className="w-full">
           My Bookings
         </Link>
       </DropdownMenuItem>
