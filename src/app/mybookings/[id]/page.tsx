@@ -4,11 +4,10 @@ import React from "react";
 
 const MyBookings:React.FC = () => {
   const { id } = useParams();
-  console.log(id);
 
   return (
     <div>
-      <p>This feature will be implemented soon!</p>
+      <h1>This feature will be implemented soon!</h1>
     </div>
   );
 };

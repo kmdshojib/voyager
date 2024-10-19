@@ -7,15 +7,10 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { logoutUser } from "@/lib/features/authSlice"
 import MobileMenu from "../Mobile-menu/mobileMenu"
 import { FaCompass, FaUser } from "react-icons/fa"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+
 import Image from "next/image"
 import { signOut } from "next-auth/react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 
 const Navbar: React.FC = () => {
   const user = useAppSelector((state) => state.auth.user)

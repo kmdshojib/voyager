@@ -2,7 +2,9 @@ import React from 'react'
 
 const MyReviews:React.FC = () => {
   return (
-    <div>MyReviews</div>
+    <div>
+        <h1>my Reviews</h1>
+    </div>
   )
 }
 
