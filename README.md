@@ -11,6 +11,7 @@ A full-stack travel application built on top of Next.js.It offers to explore tra
 - MongoDB
 - ShadCN
 - Tailwind CSS
+- Framer Motion
 
 ## Features:
 - Developed User Authentiation

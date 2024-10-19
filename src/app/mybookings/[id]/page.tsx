@@ -8,7 +8,7 @@ const myBookings = () => {
 
   return (
     <div>
-      <p>Hello</p>
+      <p>This feature Will be implemented soon!</p>
     </div>
   )
 }
