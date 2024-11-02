@@ -24,7 +24,7 @@ export default function TourContent({ data }: TourContentProps) {
                 {/* Add other sections as needed */}
             </div>
             <div className="mb-2">
-                <TourBookingForm />
+                <TourBookingForm data={data}/>
             </div>
         </div>
     )

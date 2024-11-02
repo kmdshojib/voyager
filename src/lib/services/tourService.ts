@@ -14,8 +14,18 @@ export const tourService = apiService.injectEndpoints({
                 method: "POST",
                 data: booking
             })
+        }),
+        mybookings:build.query<any, any>({
+         query: (id: any) =>({
+            url: `getmybookings/${id}`,
+            method: "GET",
+         })
         })
     })
 })
 
-export const { useTourCategoryQuery,useAddBookingsMutation } = tourService
+export const { 
+    useTourCategoryQuery,
+    useAddBookingsMutation,
+    useMybookingsQuery
+} = tourService

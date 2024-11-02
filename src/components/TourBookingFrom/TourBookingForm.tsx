@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -48,16 +48,18 @@ const formSchema = z.object({
         message: "Please enter the number of tickets.",
     }),
     message: z.string().optional(),
-    userId: z.string(),
-})
+    userId: z.string().optional(),
+    tourName:z.string().optional(),
+}).refine((data) => data.email === data.confirmEmail, {
+    message: "Emails do not match",
+    path: ["confirmEmail"],
+});
 
-export default function TourBookingForm() {
+export default function TourBookingForm({data}:any) {
     const [isAvailable, setIsAvailable] = useState(false)
     const user = useAppSelector((state) => state.auth.user)
     const { toast } = useToast()
-    const [addTour,{isLoading} ] = useAddBookingsMutation()
-
-    console.log(user)
+    const [addTour, { isLoading }] = useAddBookingsMutation()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -79,7 +81,7 @@ export default function TourBookingForm() {
         }
     }, [user, form])
 
-    const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         if (!user) {
             toast({
                 variant: "destructive",
@@ -88,38 +90,31 @@ export default function TourBookingForm() {
             });
             return;
         }
-        const userID = user._id;
-        values.userId = userID;
-    
+
+        values.userId = user._id;
+        values.tourName = data.tourName;
         try {
-            const response: any = await addTour(values);
-    
-            if (response) {
-                const { message } = response;
-                console.log(response, message);
-                
-                toast({
-                    title: message || "Tour booked successfully!",
-                    variant: "default",
-                    className: "bg-green-500 text-white",
-                    duration: 3000,
-                });
-            } else {
-                throw new Error(response?.message || "Booking failed.");
-            }
+            const response = await addTour(values).unwrap();
+            toast({
+                title: "Booking Successful",
+                description: response.message || "Your tour has been booked successfully!",
+                variant: "default",
+                className: "bg-green-500 text-white",
+                duration: 3000,
+            });
+            form.reset();
+            setIsAvailable(false);
         } catch (error: any) {
             console.error("Error booking tour:", error);
-    
             toast({
                 title: "Booking Error",
-                description: error?.message || "An unexpected error occurred.",
+                description: error?.data?.message || "An unexpected error occurred. Please try again.",
                 variant: "destructive",
                 className: "bg-red-500 text-white",
                 duration: 3000,
             });
         }
-    }, [user]); // Added `user` to dependencies
-    
+    };
 
     return (
         <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -192,7 +187,7 @@ export default function TourBookingForm() {
                                                 {field.value ? (
                                                     format(field.value, "PPP")
                                                 ) : (
-                                                    <span>dd-mm-yy *</span>
+                                                    <span>Select date *</span>
                                                 )}
                                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                             </Button>
@@ -232,7 +227,7 @@ export default function TourBookingForm() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Textarea placeholder="Message" {...field} />
+                                    <Textarea placeholder="Message (optional)" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -246,14 +241,20 @@ export default function TourBookingForm() {
                     >
                         Check Availability
                     </Button>
-                    {
-                        isLoading ? <Button type="submit" className="w-full" disabled>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      </Button> : <Button type="submit" className="w-full">
-                        BOOK NOW
-                    </Button>
-                    }
-                    
+                        <Button 
+                            type="submit" 
+                            className="w-full" 
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Booking...
+                                </>
+                            ) : (
+                                "BOOK NOW"
+                            )}
+                        </Button>
                 </form>
             </Form>
         </div>
