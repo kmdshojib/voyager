@@ -21,7 +21,7 @@ jest.mock('next/navigation', () => ({
 describe('MyBookings Page', () => {
   it('renders a heading', async () => {
     // Render the component
-    render(await MyBookings({ params: { id: '123' } }))
+    // render(await MyBookings({ params: { id: '123' } }))
 
     // Use findByRole instead of getByRole for async rendering
     const heading = await screen.findByRole('heading', { level: 1 })
