@@ -14,6 +14,6 @@ A full-stack travel application built on top of Next.js.It offers to explore tra
 - Framer Motion
 
 ## Features:
-- Developed User Authentiation
+- Developed User Authentication
 - Users can Book Tours
 - Developed a Review system 
